@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Attendance</title>
+</head>
+<body style="text-align:center; font-family:Arial; margin-top:50px;">
+
+  <h2>Office Attendance</h2>
+
+  <button onclick="sendData('Check-In')" style="padding:15px; font-size:18px;">
+    Check In
+  </button>
+
+  <br><br>
+
+  <button onclick="sendData('Check-Out')" style="padding:15px; font-size:18px;">
+    Check Out
+  </button>
+
+<script>
+function sendData(action) {
+  if (!navigator.geolocation) {
+    alert("GPS not supported");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(function(position) {
+    var data = {
+      name: "Sales_Rep_1",
+      action: action,
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbz3j0kR8WWGSJ7QJ5HVSgqgOUEBKOrbQBGw3lUmOIJCxA9AB8iCw62-r5jgZjUak8KX/exec", {
+      method: "POST",
+      body: JSON.stringify(data)
+    })
+    .then(res => alert("Successfully marked " + action))
+    .catch(err => alert("Error: " + err));
+  });
+}
+</script>
+
+</body>
+</html>
