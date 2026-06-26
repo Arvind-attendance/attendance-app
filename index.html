@@ -19,27 +19,45 @@
 
 <script>
 function sendData(action) {
-  alert("Button clicked");
+  alert("Step 1: Button clicked");
+
   if (!navigator.geolocation) {
     alert("GPS not supported");
     return;
   }
 
-  navigator.geolocation.getCurrentPosition(function(position) {
-    var data = {
-      name: "Sales_Rep_1",
-      action: action,
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    };
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      alert("Step 2: GPS captured");
 
-    fetch("https://script.google.com/macros/s/AKfycbw9mIfSf8o1LZb8Za6IHaeOijlPQwJGseTHdim3pKT1OxmDd3QFJ0A7jBKd53rBjbRD/exec", {
-      method: "POST",
-      body: JSON.stringify(data)
-    })
-    .then(res => alert("Successfully marked " + action))
-    .catch(err => alert("Error: " + err));
-  });
+      var data = {
+        name: "Sales_Rep_1",
+        action: action,
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+
+      alert("Step 3: Sending to API");
+
+      fetch("PASTE_YOUR_SCRIPT_URL_HERE", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.text())
+      .then(result => {
+        alert("Step 4: Success → " + result);
+      })
+      .catch(error => {
+        alert("Step 4: Error → " + error);
+      });
+    },
+    function(error) {
+      alert("GPS ERROR → " + error.message);
+    }
+  );
 }
 </script>
 
